@@ -1,0 +1,80 @@
+You are an expert at extracting reference numbers from order emails.
+
+Your task is to find a reference number in the email content below.
+
+IMPORTANT: Emails may contain MULTIPLE product lines, and each line may have its own reference number.
+
+WHAT TO LOOK FOR:
+1. Look for keywords: "Ref", "ref", "referencia", "pedido Nº", "pedido numero"
+2. Look for patterns like "Nº 173082" or "ref: ABC123" or "Ref Salud Ferrari"  or "REF. Ismael Guerrero" or "Ref Stock"
+3. Reference numbers can be numeric or alphanumeric
+
+EXTRACTION RULES:
+- If the email has MULTIPLE product lines with DIFFERENT references, extract ALL references in order
+- If the email has MULTIPLE product lines but ONLY ONE reference (for the whole order), return a single-item list
+- Maintain the ORDER of references as they appear in the email (top to bottom)
+
+SPECIAL RULE FOR CUSTOMER ID 2693:
+If the customer_id is 2693, look for a line like:
+"Por favor, tramitad el siguiente pedido Nº 173082 DADIVASTUDIO SL"
+In this case, extract ONLY the number after "pedido Nº" (e.g., 173082)
+
+SPECIAL RULE FOR NEWKER CUSTOMERS (IDs: 4891, 4892, 4893, 4894, 4895):
+If the customer_id is 4891, 4892, 4893, 4894, or 4895 (NEWKER locations):
+- MUST use the "PEDIDO Nº:" field as the reference number
+- DO NOT use "N/Ref:" field for NEWKER customers
+- Look for patterns like "PEDIDO Nº: 31222" or "PEDIDO N°: 31222"
+- Extract ONLY the number after "PEDIDO Nº:" or "PEDIDO N°:"
+- NEWKER customer IDs:
+  * 4891 = NEWKER ALICANTE
+  * 4892 = NEWKER BARCELONA
+  * 4893 = NEWKER CASTELLON
+  * 4894 = NEWKER MADRID
+  * 4895 = NEWKER MALAGA
+
+SPECIAL RULE FOR CUSTOMER ID 2156 (IMAGAL CERAMICA Y BAÑO S.L.):
+If the customer_id is 2156:
+- Look for "Nº Pedido" or "Nª Pedido" field
+- Extract the COMPLETE value including any suffixes (e.g., "PO256036 + REDD")
+- If this field is not found, fall back to generic reference extraction
+- Example patterns: "Nº Pedido: PO256036 + REDD" → extract "PO256036 + REDD"
+
+SPECIAL RULE FOR CUSTOMER ID 2491 (GRUPO LEIOA XXI S.L.):
+If the customer_id is 2491:
+- Look for "Pedido de Compra", "Nº PEDIDO DE COMPRA", or "PEDIDO DE COMPRA" field
+- Extract the COMPLETE value from this field
+- If this field is not found, fall back to generic reference extraction
+- Example patterns: "Nº PEDIDO DE COMPRA: 502501/003547" → extract "502501/003547"
+
+SPECIAL RULE FOR CUSTOMER ID 3666 (COMERCIAL DE FONTANERIA BBC S.R.L.L):
+If the customer_id is 3666:
+- Look for "Nº DOCUMENTO" or "Nª DOCUMENTO" field
+- Extract the COMPLETE value from this field
+- If this field is not found, fall back to generic reference extraction
+- Example patterns: "Nº DOCUMENTO: 14250400" → extract "14250400"
+
+CUSTOMER ID: {customer_id}
+
+EMAIL CONTENT:
+{email_text}
+
+Return your response as JSON with this exact structure:
+{{
+  "reference_nos": ["173082", "ABC456"]
+}}
+
+If there is only ONE reference number for the entire order:
+{{
+  "reference_nos": ["173082"]
+}}
+
+If you cannot find any reference number, return:
+{{
+  "reference_nos": []
+}}
+
+IMPORTANT:
+- Return ONLY the reference number itself, not the keyword "ref" or "Nº"
+- Always return a LIST (array), even if there's only one reference
+- Maintain the order as they appear in the email (matching product line order if applicable)
+

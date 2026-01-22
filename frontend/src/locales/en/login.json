@@ -1,0 +1,10 @@
+{
+  "title": "Order Processing – Text Orders",
+  "buttons": {
+    "signIn": "Sign in with Microsoft"
+  },
+  "enterprise": {
+    "title": "Enterprise Authentication",
+    "description": "Use your organization's Office 365 credentials to access this application securely."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "dialog": {
+    "title": "Revision de Datos Extraidos"
+  },
+  "columns": {
+    "orderNo": "No. Pedido",
+    "customerId": "ID Cliente",
+    "customerName": "Nombre Cliente",
+    "sku": "SKU",
+    "qty": "Cant.",
+    "reference": "Referencia",
+    "valve": "Valvula",
+    "deliveryAddress": "Direccion de Entrega",
+    "cpsd": "CPSD",
+    "optionSku": "SKU Opcion",
+    "optionQty": "Cant. Opcion",
+    "phone": "Telefono",
+    "contact": "Contacto"
+  },
+  "valveOptions": {
+    "no": "no",
+    "yes": "Si",
+    "horizontal": "Valvula horizontal",
+    "vertical": "Valvula vertical",
+    "rectangular": "Valvula rectangular"
+  },
+  "validation": {
+    "skuRequired": "SKU es obligatorio",
+    "skuLength": "SKU debe tener exactamente 13 caracteres",
+    "qtyRequired": "Cantidad es obligatoria",
+    "qtyPositive": "Cantidad debe ser un numero entero positivo",
+    "optionQtyPositive": "Cant. Opcion debe ser un numero positivo",
+    "orderNoRequired": "No. Pedido es obligatorio",
+    "orderNoPositive": "No. Pedido debe ser un numero entero positivo",
+    "valveInvalid": "Valvula debe ser uno de: Si, no, Valvula horizontal, Valvula vertical, Valvula rectangular",
+    "cpsdFormat": "CPSD debe estar en formato AAAA-MM-DD",
+    "invalidDate": "Fecha invalida",
+    "errorsDetected": "{{count}} error(es) de validacion detectado(s). Los pedidos invalidos se registraran en failed_orders.csv durante el procesamiento."
+  },
+  "status": {
+    "loading": "Cargando datos extraidos...",
+    "loadFailed": "Error al cargar datos extraidos",
+    "noData": "No hay datos para exportar",
+    "exportFailed": "Error al exportar a Excel"
+  }
+}

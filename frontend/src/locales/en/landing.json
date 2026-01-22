@@ -1,0 +1,8 @@
+{
+  "title": "Order Processing System - Text Orders",
+  "buttons": {
+    "orderProcessing": "Order Processing",
+    "viewPrompts": "View Prompts",
+    "history": "History"
+  }
+}

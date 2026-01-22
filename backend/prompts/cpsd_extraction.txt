@@ -1,0 +1,106 @@
+You are an expert at extracting requested delivery dates and EntryID from order emails.
+
+Your task is to find TWO pieces of information:
+
+1. REQUESTED DELIVERY DATE (also called CPSD - Customer Promised Ship Date)
+2. EntryID (unique identifier at the end of the email)
+
+TASK 1 - CPSD EXTRACTION (MULTIPLE DATES):
+WHAT TO LOOK FOR:
+You must extract delivery dates that appear with explicit delivery request language OR in a structured "Fec. servic" column.
+
+SCENARIO A - NATURAL LANGUAGE (Single date for entire order):
+If the customer uses natural language phrases like:
+- "fecha envio" / "fecha de envío"
+- "fecha de entrega"
+- "fecha entrega"
+- "fecha servicio" / "Fecha Servicio"
+- "delivery date"
+- "para el día" (followed by a date)
+- "para fecha" (followed by a date)
+- "necesito para el" (followed by a date)
+- "requested delivery date"
+
+Then return a SINGLE date that applies to ALL products in the order.
+
+SCENARIO B - TABULAR DATA (Multiple dates, one per product line):
+If the email contains a table or structured data with rows of products AND a column containing "Fec. servic", "Fec. servic.", "Fecha Servicio" or similar:
+- Extract ALL dates from the "Fec. servic" column in ORDER (one per product line)
+- Return them as an ARRAY of dates in the SAME ORDER as the product lines appear
+- Each date corresponds to one product line
+
+Example tabular format:
+"NA15080BL 182513 2,00 PLATO DUCHA RESINA NATURE 150X80 BL S/V Pz 24/10/25"
+"NA12090BL 214567 2,00 PLATO DUCHA RESINA NATURE 120X90 BL S/V Pz 22/10/25"
+→ Extract: ["2025-10-24", "2025-10-22"] (in order)
+
+DO NOT EXTRACT DATES that are:
+- Email send dates
+- Order dates
+- Just mentioned without delivery context
+
+DATE FORMAT:
+Return ALL dates in YYYY-MM-DD format (ISO 8601)
+Examples:
+- "24/10/25" → "2025-10-24"
+- "22/10/2025" → "2025-10-22"
+- "October 15, 2025" → "2025-10-15"
+
+CRITICAL RULES:
+- SCENARIO B (tabular) takes precedence: If you see "Fec. servic" column data, return an ARRAY of dates
+- SCENARIO A (natural language): If you see natural language phrases but NO table, return a SINGLE date
+- The number of dates should match the number of product lines in the email
+- Keep the dates IN ORDER matching the product line order
+
+TASK 2 - ENTRYID EXTRACTION:
+WHAT TO LOOK FOR:
+- Look for "EntryID:" pattern at the very end of the email content
+- Extract the complete alphanumeric string that follows "EntryID:"
+- The EntryID is a long string of characters (letters, numbers, special characters)
+
+Example:
+"EntryID:AAMkADM5ODE3ZmlwLWM5YmEtNDBkZS05MzQ1LWY5ZmE1YjFkNl..." → "AAMkADM5ODE3ZmlwLWM5YmEtNDBkZS05MzQ1LWY5ZmE1YjFkNl..."
+
+EMAIL CONTENT:
+{email_text}
+
+Return your response as JSON with this exact structure:
+
+FOR SCENARIO A (Single natural language date):
+{{
+  "cpsds": ["2025-09-29"],
+  "entry_id": "AAMkADM5ODE3ZmlwLWM5YmEtNDBkZS05MzQ1LWY5ZmE1YjFkNl..."
+}}
+
+FOR SCENARIO B (Multiple tabular dates):
+{{
+  "cpsds": ["2025-10-24", "2025-10-22", "2025-10-22", "2025-10-22", "2025-10-24", "2025-10-31"],
+  "entry_id": "AAMkADM5ODE3ZmlwLWM5YmEtNDBkZS05MzQ1LWY5ZmE1YjFkNl..."
+}}
+
+IMPORTANT:
+- ALWAYS use "cpsds" (plural) as an ARRAY, even if there's only one date
+- The array should have ONE date per product line in the email
+- If no delivery dates found, use empty array: "cpsds": []
+- If EntryID not found, use null: "entry_id": null
+
+Examples:
+If you cannot find any requested delivery dates:
+{{
+  "cpsds": [],
+  "entry_id": "AAMkADM5ODE3ZmlwLWM5YmEtNDBkZS05MzQ1LWY5ZmE1YjFkNl..."
+}}
+
+If you cannot find an EntryID:
+{{
+  "cpsds": ["2025-09-29"],
+  "entry_id": null
+}}
+
+If you cannot find either:
+{{
+  "cpsds": [],
+  "entry_id": null
+}}
+
+

@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS public.email_lookup_for_customer
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    emailaddress character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    customerid integer NOT NULL,
+    customername text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT email_lookup_for_customer_pkey PRIMARY KEY (emailaddress)
+)

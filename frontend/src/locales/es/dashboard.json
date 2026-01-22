@@ -1,0 +1,22 @@
+{
+  "title": "Sistema de Procesamiento de Pedidos - Pedidos de Texto",
+  "buttons": {
+    "processOrders": "Procesar Pedidos"
+  },
+  "resultsDownload": {
+    "title": "Descargar Resultados",
+    "description": "Descargar los detalles de pedidos extraidos y archivos CSV de pedidos fallidos",
+    "claveiInput": "CSV de Entrada Clavei",
+    "failedOrders": "CSV de Pedidos Fallidos",
+    "expectedFiles": "Archivos esperados:",
+    "claveiFileName": "job_{{jobId}}_clavei_input.csv",
+    "claveiDescription": "Datos de entrada Clavei de AI_Tool_OutputTable_v2",
+    "failedFileName": "job_{{jobId}}_failed_orders.csv",
+    "failedDescription": "Correos que fallaron en el procesamiento"
+  },
+  "errors": {
+    "fileNotFound": "Archivo {{fileType}} no encontrado",
+    "downloadFailed": "Error al descargar {{fileType}}",
+    "startJobFailed": "Error al iniciar el trabajo. Por favor, intente de nuevo."
+  }
+}

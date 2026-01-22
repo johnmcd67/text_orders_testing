@@ -1,0 +1,24 @@
+{
+  "buttons": {
+    "generate": "Generar Resumen de Fallos"
+  },
+  "status": {
+    "analyzing": "Analizando Fallos...",
+    "allSuccess": "Todos los pedidos se procesaron correctamente - no hay fallos que analizar."
+  },
+  "card": {
+    "title": "Analisis de Pedidos Fallidos ({{count}} fallo(s))"
+  },
+  "tooltips": {
+    "generate": "Generar resumen",
+    "regenerate": "Regenerar resumen",
+    "exportPdf": "Exportar como PDF",
+    "expand": "Expandir resumen",
+    "collapse": "Contraer resumen",
+    "close": "Cerrar resumen"
+  },
+  "errors": {
+    "generateFailed": "Error al generar el resumen de fallos. Por favor, intente de nuevo.",
+    "exportFailed": "Error al exportar PDF. Por favor, intente de nuevo."
+  }
+}

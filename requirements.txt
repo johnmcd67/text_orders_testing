@@ -1,0 +1,33 @@
+# Web Framework
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+
+# Task Queue
+celery>=5.3.6
+redis>=5.0.1
+
+# AI/ML
+anthropic>=0.18.1
+
+# Database
+psycopg[binary]>=3.1.18
+
+# Utilities
+python-dotenv>=1.0.1
+requests>=2.31.0
+pydantic>=2.6.0
+
+# PDF Generation
+fpdf2>=2.7.0
+
+# Authentication
+python-jose[cryptography]>=3.3.0
+
+# Data Processing (Phase 2)
+pandas>=2.2.0
+rapidfuzz>=3.6.1
+
+# Azure Storage (Phase 4)
+azure-storage-blob>=12.19.0
+azure-storage-file-share==12.15.0
+

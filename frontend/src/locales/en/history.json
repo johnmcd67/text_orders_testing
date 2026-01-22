@@ -1,0 +1,47 @@
+{
+  "title": "History Page",
+  "status": {
+    "loading": "Loading history data...",
+    "error": "Error loading history data",
+    "noData": "No completed jobs found"
+  },
+  "charts": {
+    "completedJobsPerDay": "Completed Jobs Per Day",
+    "orderLinesPerDay": "Completed Order Lines Per Day",
+    "ordersPerDay": "Completed Orders Per Day",
+    "avgProcessTime": "Average Process Time Per Job (seconds/order line)"
+  },
+  "tables": {
+    "historyDetails": "History Details",
+    "orderLinesDetails": "Order Lines Details",
+    "ordersDetails": "Orders Details",
+    "processTimeDetails": "Process Time Details"
+  },
+  "columns": {
+    "date": "Date",
+    "completedJobs": "Number of Completed Jobs",
+    "totalOrderLines": "Total Order Lines",
+    "totalOrders": "Total Orders",
+    "jobId": "Job ID",
+    "duration": "Duration (seconds/order line)",
+    "notAvailable": "N/A"
+  },
+  "labels": {
+    "jobsCompleted": "Jobs Completed",
+    "totalOrderLines": "Total Order Lines",
+    "totalOrders": "Total Orders"
+  },
+  "filters": {
+    "viewBy": "View By:",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "quarterly": "Quarterly",
+    "yearly": "Yearly",
+    "dateRange": "Date Range:",
+    "startDate": "Start date",
+    "to": "to",
+    "endDate": "End date",
+    "clearDates": "Clear Dates"
+  }
+}

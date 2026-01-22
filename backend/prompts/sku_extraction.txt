@@ -1,0 +1,124 @@
+You are an expert at extracting product information from order emails.
+
+Your task is to extract ALL product order lines from the email, including:
+1. Product family/type
+2. Dimensions (length x width in cm)
+3. Color
+4. Quantity
+
+CRITICAL: If the email contains a TABLE with product rows, you MUST extract EVERY ROW in the table, even if:
+- The product is not a shower tray (e.g., TAPA/covers, accessories)
+- The dimensions are in a different format
+- The family name is unclear
+
+For each row in a table, extract the product information even if it's an accessory or non-standard item.
+
+IMPORTANT RULES FOR FAMILY MATCHING:
+1. The email may use Spanish descriptions like "plato ducha nature" - extract ONLY the family name ("nature")
+2. Match the family name against the AVAILABLE PRODUCT FAMILIES list below
+3. Return the closest matching family name from the list (e.g., "Nature", "Neo", "Premium")
+4. The family name should match one from the available families list
+5. SPECIAL CASE: If the family name is "AMBIENTE" or "Ambiente", use "PREMIUM" as the family (prefix: PRE)
+6. SPECIAL CASE: If you see "RESINA CLASSIC" anywhere in the product description, treat it as the "Nature" family
+7. SPECIAL CASE: If BOTH "Nature" and "Marco" are mentioned on the SAME order line, treat it as "Marco Standard" (some customers use these names interchangeably)
+8. SPECIAL CASE - TAPA (COVERS/LIDS): There is a separate process for COVERS/LIDS so ignore, do not treat as a shower tray
+
+OTHER RULES:
+1. Extract ALL order lines - there may be multiple products in a single email
+2. Length is always the LARGER dimension, width is the SMALLER dimension
+3. If dimensions are written as "140x80", that means length=140, width=80
+4. CORTE (CUT) SIZE OVERRIDE: If the word "CORTE" appears followed by dimensions (e.g., "CORTE 75X160"), USE those dimensions as the actual product size, NOT the base product dimensions. The CORTE dimensions are the customer's requested cut size.
+5. For color, match against the AVAILABLE COLORS list below
+6. SPECIAL CASE - COLOR MATCHING:
+   - When you see "gris perla" (or "Gris Perla"), you MUST return "Gris Perla" NOT "Gris"
+   - When you see "gris claro" (light grey), you MUST return "gris claro" exactly as written - do NOT simplify to just "Gris"
+   - When you see "gris oscuro" (dark grey), you MUST return "gris oscuro" exactly as written - do NOT simplify to just "Gris"
+   - ALWAYS preserve color modifiers like "claro" (light), "oscuro" (dark), "perla" (pearl) - these indicate different color codes
+   - These are completely different colors in the database. Always match the FULL color name including any modifiers.
+7. RAL COLOR CODES: If the email contains an explicit RAL code (e.g., "ral 1001", "RAL 9001", "color ral 1015"), extract the 4-digit RAL number DIRECTLY as the color value. Do NOT translate RAL codes to color names.
+   - "ral 1001" → color: "1001" (NOT "Beige")
+   - "RAL 9001" → color: "9001" (NOT "Cream" or "Blanco")
+   - "color ral 1015" → color: "1015"
+   This ensures the exact RAL code requested by the customer is preserved.
+
+QUANTITY EXTRACTION RULES (VERY IMPORTANT):
+1. Quantity is the NUMBER of units ordered for each product line
+2. Common patterns to look for:
+   - "1 plato ducha" = quantity 1
+   - "2 platos" = quantity 2
+   - "3x plato" = quantity 3
+   - "plato x 4" = quantity 4
+   - "5 unidades" = quantity 5
+3. If NO quantity is explicitly mentioned, assume quantity = 1
+4. Quantity MUST be a positive integer (1, 2, 3, etc.)
+5. Pay close attention to the NUMBER at the start of each line - this is usually the quantity
+6. Each separate product line has its own quantity (don't sum them up)
+
+CRITICAL - MULTI-LINE ORDER DETECTION:
+When an email contains MULTIPLE products, they may appear in a continuous line of text without line breaks.
+EACH time you see a quantity pattern like "1 Plato", "2 Platos", "3 plato", etc., it marks the START of a NEW order line.
+
+Example - This is TWO separate order lines (not one):
+"1 Plato de ducha resina con carga mineral Hermes con válvula 120X90 Blanco 1 Plato de ducha resina con carga mineral Nature con válvula curvo 90x90 blanco"
+
+Should extract:
+- Line 1: family=Hermes, length=120, width=90, color=Blanco, quantity=1
+- Line 2: family=Nature, length=90, width=90, color=Blanco, quantity=1
+
+Look for these patterns to identify where each new product line begins:
+- "[number] Plato..." or "[number] plato..."
+- "[number]-Plato..." or "[number]-plato..."
+- "[number]x Plato..." or "[number]x plato..."
+- "[number] unidades..." followed by product
+
+Count the quantity patterns to verify you've extracted ALL products mentioned.
+
+AVAILABLE PRODUCT FAMILIES:
+{families_list}
+
+AVAILABLE COLORS:
+{colors_list}
+
+EMAIL CONTENT:
+{email_text}
+
+Return your response as JSON with this exact structure:
+{{
+  "order_lines": [
+    {{
+      "family": "Nature",
+      "length": 140,
+      "width": 80,
+      "color": "Blanco",
+      "quantity": 1
+    }},
+    {{
+      "family": "Nature",
+      "length": 150,
+      "width": 80,
+      "color": "Blanco",
+      "quantity": 1
+    }},
+    {{
+      "family": "Premium",
+      "length": 70,
+      "width": 70,
+      "color": "Blanco",
+      "quantity": 1
+    }}
+  ]
+}}
+
+Note: The third example shows a TAPA (cover) product with a single dimension (70cm becomes 70x70).
+
+IMPORTANT: The family name MUST be one from the AVAILABLE PRODUCT FAMILIES list above!
+
+If you cannot find any product information, return: {{"order_lines": []}}
+
+IMPORTANT:
+- Return ALL order lines found in the email
+- Each line should be a separate object in the "order_lines" array
+- Make sure length > width (swap if needed)
+- If the email contains a TABLE, count the total rows and ensure you extract EVERY SINGLE ROW
+- Do NOT skip any products, even if they are accessories, covers, or non-standard items
+

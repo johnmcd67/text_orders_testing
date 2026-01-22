@@ -1,0 +1,47 @@
+{
+  "title": "Pagina de Historial",
+  "status": {
+    "loading": "Cargando datos del historial...",
+    "error": "Error al cargar datos del historial",
+    "noData": "No se encontraron trabajos completados"
+  },
+  "charts": {
+    "completedJobsPerDay": "Trabajos Completados por Dia",
+    "orderLinesPerDay": "Lineas de Pedido Completadas por Dia",
+    "ordersPerDay": "Pedidos Completados por Dia",
+    "avgProcessTime": "Tiempo Promedio de Proceso por Trabajo (segundos/linea de pedido)"
+  },
+  "tables": {
+    "historyDetails": "Detalles del Historial",
+    "orderLinesDetails": "Detalles de Lineas de Pedido",
+    "ordersDetails": "Detalles de Pedidos",
+    "processTimeDetails": "Detalles de Tiempo de Proceso"
+  },
+  "columns": {
+    "date": "Fecha",
+    "completedJobs": "Numero de Trabajos Completados",
+    "totalOrderLines": "Total Lineas de Pedido",
+    "totalOrders": "Total Pedidos",
+    "jobId": "ID Trabajo",
+    "duration": "Duracion (segundos/linea de pedido)",
+    "notAvailable": "N/D"
+  },
+  "labels": {
+    "jobsCompleted": "Trabajos Completados",
+    "totalOrderLines": "Total Lineas de Pedido",
+    "totalOrders": "Total Pedidos"
+  },
+  "filters": {
+    "viewBy": "Ver Por:",
+    "daily": "Diario",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "quarterly": "Trimestral",
+    "yearly": "Anual",
+    "dateRange": "Rango de Fechas:",
+    "startDate": "Fecha inicio",
+    "to": "a",
+    "endDate": "Fecha fin",
+    "clearDates": "Borrar Fechas"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Sistema de Procesamiento de Pedidos - Pedidos de Texto",
+  "buttons": {
+    "orderProcessing": "Procesamiento de Pedidos",
+    "viewPrompts": "Ver Prompts",
+    "history": "Historial"
+  }
+}

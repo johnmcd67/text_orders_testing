@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS public.ai_tool_input_table_from_web_app
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    customerid integer,
+    "13DigitAlias" character varying(20) COLLATE pg_catalog."default",
+    orderno integer,
+    orderqty integer,
+    order_date date,
+    reference_no character varying(100) COLLATE pg_catalog."default",
+    cut character varying(50) COLLATE pg_catalog."default",
+    valve character varying(50) COLLATE pg_catalog."default",
+    standard_color character varying(20) COLLATE pg_catalog."default",
+    delivery_address character varying(200) COLLATE pg_catalog."default",
+    alternative_cpsd date,
+    type_of_valve character varying(50) COLLATE pg_catalog."default",
+    entry_id character varying(500) COLLATE pg_catalog."default",
+    option_sku character varying(100) COLLATE pg_catalog."default",
+    option_qty numeric,
+    telephone_number character varying(50) COLLATE pg_catalog."default",
+    contact_name character varying(100) COLLATE pg_catalog."default",
+    order_type character varying(50) COLLATE pg_catalog."default",
+    job_id integer,
+    CONSTRAINT ai_tool_input_table_from_web_app_pkey PRIMARY KEY (id)
+)

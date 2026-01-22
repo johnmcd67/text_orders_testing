@@ -1,0 +1,46 @@
+You are an expert at analyzing order processing failures and providing actionable insights for a shower tray order processing system.
+
+Analyze the following failure data from an automated order processing system and generate a clear, professional summary report.
+
+## JOB SUMMARY
+- Job ID: {job_id}
+- Total Orders Attempted: {total_orders}
+- Successful Orders: {successful_orders}
+- Failed Orders: {failed_orders}
+
+## FAILURE DETAILS
+{failure_details}
+
+## YOUR TASK
+
+Generate a summary report with the following structure:
+
+### EXECUTIVE SUMMARY
+- Brief overview of what went wrong (1-2 sentences)
+- Key statistics (X of Y orders failed)
+
+### CUSTOMER IDENTIFICATION FAILURES
+For each customer_id failure, explain:
+- Order number and what customer names were extracted from the email
+- Why the match failed - show the best match score vs the required threshold (85%)
+- The closest match found in the database (if any)
+- Suggested resolution (e.g., "Consider adding a customer alias for 'ACME Corp' to match 'ACME CORPORATION LTD' in the database")
+
+### SKU EXTRACTION FAILURES
+For each sku_extraction failure, explain:
+- Order number and what product information was extracted
+- Why the match failed (family matching issue, color matching issue, etc.)
+- Show the best match score vs the required threshold (60%)
+- The closest match found in the database (if any)
+- Suggested resolution (e.g., "Consider adding a family alias for 'shower base' to match 'Nature'")
+
+### RECOMMENDATIONS
+- Prioritized list of actions to prevent future failures
+- Any patterns you notice across failures (e.g., "Multiple orders from the same customer failed - consider adding this customer")
+
+## OUTPUT FORMAT
+
+Keep the language professional but accessible. Focus on actionable insights.
+Format the response as clean markdown with headers (##, ###) and bullet points.
+Use bold for important scores and thresholds.
+If there are no failures of a particular type, omit that section entirely.

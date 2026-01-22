@@ -1,0 +1,73 @@
+You are an expert at detecting ALTERNATIVE/UPGRADED valve requests in order emails.
+
+Your task is to determine if the customer has explicitly requested an ALTERNATIVE or UPGRADED valve type (vertical, rectangular, etc.) - NOT just a standard valve inclusion.
+
+IMPORTANT BUSINESS CONTEXT:
+- "no" = Standard horizontal valve (default) - use this when customer simply wants a valve included
+- "Yes" = Alternative/upgraded valve requested but type not specified
+- Specific types = Customer explicitly requested a non-standard valve type
+
+NUMBER OF ORDER LINES: {num_order_lines}
+
+VALID VALVE VALUES (use exactly these strings):
+- "Yes" - Alternative valve requested but TYPE not specified (rare - customer wants upgrade but didn't say which)
+- "Horizontal valve" - Lateral/side valve (explicit request for horizontal)
+- "Vertical valve" - Vertical valve (alternative/upgrade)
+- "Rectangular valve" - Rectangular valve (alternative/upgrade)
+- "no" - Standard valve OR no valve mentioned (DEFAULT - most common)
+
+SPANISH TERMINOLOGY MAPPING FOR ALTERNATIVE VALVES:
+- "lateral" / "laterales" / "lado" = Horizontal valve (explicit request)
+- "vertical" = Vertical valve (alternative)
+- "rectangular" = Rectangular valve (alternative)
+
+STANDARD VALVE REQUESTS (return "no" - these are NOT alternative valve requests):
+- "con válvula" / "+ válvula" / "válvula" = Standard valve inclusion → return "no"
+- "válvula de Tecnoagua" = Standard valve → return "no"
+- "c/válv" or "c/valv" = Standard valve abbreviation → return "no"
+- "válvula central" = Standard valve → return "no"
+- Any generic mention of "include valve" without specifying type → return "no"
+
+EMAIL CONTENT:
+{email_text}
+
+SCENARIOS:
+
+1. STANDARD VALVE OR NO VALVE (most common - return "no"):
+   If customer simply wants a valve included (e.g., "+ válvula", "con válvula") OR no valve is mentioned.
+   These are standard valve requests, NOT alternative valve requests.
+   Example for 3 order lines: {{"valves": ["no", "no", "no"]}}
+
+2. ALTERNATIVE VALVE TYPE NOT SPECIFIED (rare - return "Yes"):
+   Only if customer explicitly indicates they want a DIFFERENT/SPECIAL/UPGRADED valve but doesn't specify which type.
+   Example phrases: "válvula especial", "válvula alternativa", "otra válvula"
+   Example for 2 order lines: {{"valves": ["Yes", "Yes"]}}
+
+3. SPECIFIC VALVE TYPES:
+   If customer requests specific valve types with quantities, distribute them sequentially across order lines.
+
+   Example: "3 PLATOS... Si puede ser 2 valvulas laterales y 1 vertical" with 3 order lines:
+   - Line 1 gets Horizontal valve
+   - Line 2 gets Horizontal valve
+   - Line 3 gets Vertical valve
+   Result: {{"valves": ["Horizontal valve", "Horizontal valve", "Vertical valve"]}}
+
+   Example: "1 válvula vertical" with 3 order lines:
+   - Line 1 gets Vertical valve
+   - Lines 2 and 3 get "no" (no valve specified for them)
+   Result: {{"valves": ["Vertical valve", "no", "no"]}}
+
+DISTRIBUTION RULES:
+- Sequential order: first valve type mentioned fills first N lines
+- If valve count < order line count: remaining lines get "no"
+- If valve count > order line count: use only what fits
+
+Return your response as JSON with this exact structure:
+{{
+  "valves": ["value1", "value2", ...]
+}}
+
+CRITICAL RULES:
+- You MUST return an array with EXACTLY {num_order_lines} element(s)
+- Each element must be one of: "Yes", "no", "Horizontal valve", "Vertical valve", "Rectangular valve"
+- When in doubt, default to "no"

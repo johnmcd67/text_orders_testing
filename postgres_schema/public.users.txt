@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id integer NOT NULL DEFAULT nextval('users_id_seq'::regclass),
+    email character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(255) COLLATE pg_catalog."default",
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    access_level integer,
+    microsoft_id character varying(255) COLLATE pg_catalog."default",
+    auth_method character varying(20) COLLATE pg_catalog."default" DEFAULT 'microsoft'::character varying,
+    is_active boolean DEFAULT true,
+    CONSTRAINT users_pkey PRIMARY KEY (id),
+    CONSTRAINT users_email_key UNIQUE (email),
+    CONSTRAINT users_microsoft_id_key UNIQUE (microsoft_id)
+)

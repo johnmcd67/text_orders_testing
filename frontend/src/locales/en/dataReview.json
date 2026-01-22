@@ -1,0 +1,46 @@
+{
+  "dialog": {
+    "title": "Extracted Data Review"
+  },
+  "columns": {
+    "orderNo": "Order No",
+    "customerId": "Customer ID",
+    "customerName": "Customer Name",
+    "sku": "SKU",
+    "qty": "Qty",
+    "reference": "Reference",
+    "valve": "Valve",
+    "deliveryAddress": "Delivery Address",
+    "cpsd": "CPSD",
+    "optionSku": "Option SKU",
+    "optionQty": "Option Qty",
+    "phone": "Phone",
+    "contact": "Contact"
+  },
+  "valveOptions": {
+    "no": "no",
+    "yes": "Yes",
+    "horizontal": "Horizontal valve",
+    "vertical": "Vertical valve",
+    "rectangular": "Rectangular valve"
+  },
+  "validation": {
+    "skuRequired": "SKU is required",
+    "skuLength": "SKU must be exactly 13 characters",
+    "qtyRequired": "Quantity is required",
+    "qtyPositive": "Quantity must be a positive integer",
+    "optionQtyPositive": "Option Qty must be a positive number",
+    "orderNoRequired": "Order No is required",
+    "orderNoPositive": "Order No must be a positive integer",
+    "valveInvalid": "Valve must be one of: Yes, no, Horizontal valve, Vertical valve, Rectangular valve",
+    "cpsdFormat": "CPSD must be in YYYY-MM-DD format",
+    "invalidDate": "Invalid date",
+    "errorsDetected": "{{count}} validation error(s) detected. Invalid orders will be logged to failed_orders.csv during processing."
+  },
+  "status": {
+    "loading": "Loading extracted data...",
+    "loadFailed": "Failed to load extracted data",
+    "noData": "No data to export",
+    "exportFailed": "Failed to export to Excel"
+  }
+}

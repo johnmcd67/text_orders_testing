@@ -1,0 +1,43 @@
+{
+  "buttons": {
+    "backToHome": "Back to Home",
+    "logout": "Logout",
+    "approve": "Approve",
+    "reject": "Reject",
+    "retry": "Retry",
+    "exportExcel": "Export to Excel",
+    "exportPdf": "Export as PDF",
+    "exportTxt": "Export as .txt",
+    "download": "Download",
+    "clearDates": "Clear Dates",
+    "startNewJob": "Start New Job"
+  },
+  "status": {
+    "loading": "Loading...",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Pending",
+    "running": "Running",
+    "unknown": "Unknown",
+    "initializing": "Initializing...",
+    "processing": "Processing...",
+    "awaitingReview": "Data Extracted - Awaiting Review",
+    "approving": "Approving...",
+    "downloading": "Downloading...",
+    "starting": "Starting...",
+    "signingIn": "Signing in..."
+  },
+  "labels": {
+    "jobId": "Job ID:",
+    "status": "Status:",
+    "started": "Started:",
+    "completed": "Completed:",
+    "step": "Step {{step}}/{{total}}: {{label}} {{progress}}%"
+  },
+  "language": {
+    "english": "English",
+    "spanish": "Spanish",
+    "en": "EN",
+    "es": "ES"
+  }
+}

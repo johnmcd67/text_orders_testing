@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS public.job_runs
+(
+    id integer NOT NULL DEFAULT nextval('job_runs_id_seq'::regclass),
+    status character varying(50) COLLATE pg_catalog."default",
+    progress integer,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    completed_at timestamp without time zone,
+    progress_message text COLLATE pg_catalog."default",
+    number_of_orders integer,
+    number_of_order_lines integer,
+    failure_context jsonb,
+    failure_summary text COLLATE pg_catalog."default",
+    failure_summary_generated_at timestamp without time zone,
+    CONSTRAINT job_runs_pkey PRIMARY KEY (id)
+)

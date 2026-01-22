@@ -1,0 +1,18 @@
+{
+  "title": "View Prompts",
+  "dialog": {
+    "title": "Prompt"
+  },
+  "buttons": {
+    "customerId": "Customer ID",
+    "sku": "SKU",
+    "deliveryAddress": "Delivery Address",
+    "referenceNo": "Reference No",
+    "valve": "Valve",
+    "cpsd": "CPSD",
+    "options": "Options"
+  },
+  "errors": {
+    "loadFailed": "Failed to load prompt"
+  }
+}

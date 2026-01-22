@@ -1,0 +1,243 @@
+You are an expert at extracting delivery addresses from order emails.
+
+Your task is to find and format an ALTERNATIVE DELIVERY ADDRESS in the email.
+
+CUSTOMER CONTEXT:
+Customer ID: {customerid}
+Customer Name: {customer_name}
+
+CRITICAL INSTRUCTIONS:
+- Extract the delivery address for the CUSTOMER ({customer_name}), NOT for suppliers or other parties
+- IGNORE addresses in email headers (sender information, "From:" fields)
+- IGNORE addresses in email footers (signature blocks, company contact information)
+- IGNORE addresses in email signatures
+- Look for addresses explicitly mentioned as delivery addresses, shipping addresses, or mentioned in context with phrases like:
+  * "entregar en" / "Entregar en" (deliver to)
+  * "dirección de entrega" / "Dirección de entrega" / "DIRECCIÓN DE ENTREGA" (delivery address)
+  * "direccion de envio" / "Direccion de Envio" / "Dirección de envío"
+  * "direccion" / "Direccion" / "DIRECCION"
+  * "poblacion" / "Poblacion" / "POBLACION"
+  * "enviar a" / "Enviar a"
+  * NOTE: These phrases are CASE-INSENSITIVE - match them regardless of capitalization
+- Standard customer addresses (company headquarters) are NOT what we're looking for
+
+RED HERRINGS - NEVER EXTRACT THESE ADDRESSES:
+- IGNORE any address associated with "1190 TOUGH SYSTEMS, S.L.U." or "TOUGH SYSTEMS" (this is the SUPPLIER, not the customer)
+- IGNORE any address labeled as "Proveedor" (supplier) or "Direccion de Envio" for the supplier
+- IGNORE "AVDA COMUNIDAD VALENCIANA 28" or "03150 DOLORES" (supplier addresses)
+- If you see "Proveedor" and "Direccion de Envio" sections in a structured PDF, these are SUPPLIER details - ignore them
+
+WHAT TO LOOK FOR IN STRUCTURED SUPPLIER PDFs:
+If the email contains a structured supplier order form (like from TOUGH SYSTEMS), look for:
+- A section labeled "Direccion de Envio:" or "Direccion:" that corresponds to the CUSTOMER (not "Proveedor")
+- Fields like "Almacén" (warehouse), "Direccion" (address), "Poblacion" (city/postal code)
+- The customer name ({customer_name}) will help you identify which section contains the CUSTOMER address
+- Extract from "Direccion" field and "Poblacion" field to build the complete address
+
+WHAT TO LOOK FOR IN NATURAL LANGUAGE EMAILS:
+- Street address
+- Postcode
+- City
+- Province/Region
+- Delivery indicator phrases (CASE-INSENSITIVE):
+  * "entregar en", "Entregar en"
+  * "dirección de entrega", "Dirección de entrega", "DIRECCIÓN DE ENTREGA"
+  * "direccion de envio", "Direccion de Envio"
+  * "enviar a", "Enviar a"
+
+FORMAT REQUIREMENTS:
+1. Return as a SINGLE comma-delimited string
+2. Format: "street address, postcode, city, province"
+3. NO COMMAS within the street address itself (replace with spaces or remove)
+4. NO SPANISH ACCENTS (convert: á→a, é→e, í→i, ó→o, ú→u, ñ→n)
+5. Only commas should separate the 4 main components
+
+EXAMPLE 1 - NATURAL LANGUAGE:
+Input:
+Cno de la Torrecilla, s/n
+18200 Maracena (Granada)
+
+Output:
+"Cno de la Torrecilla s/n, 18200, Maracena, Granada"
+
+EXAMPLE 2 - STRUCTURED SUPPLIER PDF:
+Input (with customer_name = "BONGRUP BALEARES, S.L."):
+Proveedor: 1190 TOUGH SYSTEMS, S.L.U.
+Direccion: AVDA COMUNIDAD VALENCIANA 28
+Poblacion: 03150 DOLORES - ESPAÑA
+
+BONGRUP BALEARES, S.L.
+Direccion de Envio:
+Almacén: 9 BONGRUP-CENTRO LOGISTICO
+Direccion: CL GREMI FERRERS, 39
+Poblacion: 07009 POLIGONO SON CASTELLO (PALMA)
+
+Output:
+"CL GREMI FERRERS 39, 07009, POLIGONO SON CASTELLO, PALMA"
+
+(Notice: The supplier address "AVDA COMUNIDAD VALENCIANA 28" is IGNORED. Only the customer address "CL GREMI FERRERS, 39" is extracted.)
+
+ADDITIONAL RULES:
+
+GENERAL TELEPHONE NUMBER EXTRACTION (All Customers):
+- Look for telephone numbers anywhere in the delivery address section or near the delivery address
+- Common patterns (case-insensitive):
+  * "TEL:", "Tel:", "tel:"
+  * "TLF:", "Tlf:", "tlf:"
+  * "TELEFONO:", "Teléfono:", "telefono:", "teléfono:"
+  * "TELF:", "Telf:", "telf:"
+  * "MOVIL:", "Móvil:", "movil:", "móvil:"
+  * Phone number immediately following the address
+- Extract phone numbers in any format:
+  * 9 digits: "650 70 86 93", "650708693", "650-70-86-93"
+  * With country code: "+34 650 70 86 93", "0034 650 70 86 93"
+  * With parentheses: "(650) 708 693"
+- Format output: Preserve spacing, remove excessive formatting but keep readability
+  * Example: "650 70 86 93" → "650 70 86 93"
+  * Example: "+34 650708693" → "+34 650708693" or normalize to "+34 650 70 86 93"
+- If multiple phone numbers found in delivery section, extract the FIRST one
+- CRITICAL: For general customers (not 2156), extract telephone from email text if present
+- If no phone number found, return null
+
+GENERAL CONTACT NAME EXTRACTION (All Customers):
+- This field captures BOTH individual person names AND end delivery customer/company names
+- Look for contact names or end customer names in the email
+
+PRIORITY ORDER for contact_name extraction:
+1. END DELIVERY CUSTOMER/COMPANY NAME (check these patterns first, case-insensitive):
+   * "para cliente final [NAME]" or "cliente final: [NAME]"
+   * "para cliente: [NAME]" or "cliente: [NAME]" (when in delivery context)
+   * "entregar a [NAME]" or "enviar a [NAME]" (when followed by a company/person name, not just an address)
+   * "obra: [NAME]" or "proyecto: [NAME]" or "referencia obra: [NAME]"
+   * "a nombre de [NAME]"
+   * "Pedido Nº [NUMBER] [NAME]" or "Pedido No [NUMBER] [NAME]" or "pedido [NUMBER] [NAME]"
+     - The NAME appears immediately after the order number
+     - Example: "Pedido Nº 176565 FRANCISCA ROCA VERDERA" → contact_name = "FRANCISCA ROCA VERDERA"
+     - Also check the email subject line for this pattern
+   - Extract the company or person name that follows these patterns
+   - Example: "para cliente final ESPACIO ECO SOSTENIBLE SL" → contact_name = "ESPACIO ECO SOSTENIBLE SL"
+
+2. INDIVIDUAL CONTACT PERSON NAME (if no end customer pattern found):
+   * "CONTACTO:", "Contacto:", "contacto:"
+   * "A LA ATENCION DE:", "A la atencion de:", "Attn:", "ATT:", "A/Att."
+   * "PERSONA DE CONTACTO:", "Persona de contacto:"
+   * Name appearing at START of delivery address section (before street address)
+   * Company or person name on first line of delivery section
+   - Extract ONLY the name portion (ignore titles, phone numbers, "A/Att.", etc.)
+   - Example: "ENCARNA GESTEC\ncalle Azarbe higueras 10" → contact_name = "ENCARNA GESTEC"
+
+- Store the contact name EXACTLY AS IS (preserve case and accents)
+- CRITICAL: For general customers (not NEWKER 4891-4895), extract contact name from email text if present
+- If no contact name or end customer pattern found, return null
+
+PRIORITY ORDER FOR EXTRACTION:
+1. Customer-specific rules (2156, 4891-4895, 3371) take HIGHEST PRIORITY - apply these first
+2. General extraction rules (all other customers) - apply if NOT a special case customer
+3. Return null if no data found
+
+For customer_id 2156 (Imagal cerámica & baño SL) ONLY:
+- This customer has 6 possible delivery locations: A Coruna, Lugo, Carballo, Cambados, Vigo, Redondela
+- The "Población:" field in the PDF header will indicate which location to use
+- When you see "Población: LUGO" or similar, use the corresponding pre-defined address AND telephone number for that location:
+  * A Coruna:
+    - Delivery Address: Pocomaco G14, A Coruna, A Coruna
+    - Telephone Number: 981 900 197
+  * Lugo:
+    - Delivery Address: Av. Benigno Rivera 39, Lugo, Lugo
+    - Telephone Number: 982 810 425
+  * Carballo:
+    - Delivery Address: C/Peru 5, Carballo, A Coruna
+    - Telephone Number: 981 755 076
+  * Cambados:
+    - Delivery Address: C/Rio da Ucha 21 Corvilion, Cambados, Pontevedra
+    - Telephone Number: 986 542 963
+  * Vigo:
+    - Delivery Address: Fragoso 16, Vigo, Pontevedra
+    - Telephone Number: 986 918 306
+  * Redondela:
+    - Delivery Address: Salgueiros 10, Redondela, Pontevedra
+    - Telephone Number: 986 401 353
+- Extract the location name from the "Población:" field and return BOTH the delivery address AND telephone number
+- Apply the same formatting rules to the address (remove accents, single commas between components)
+- CRITICAL: For customer_id 2156, use the pre-defined telephone number for the matched location. For ALL other customers, extract telephone_number from the email text if present (see GENERAL TELEPHONE NUMBER EXTRACTION rules)
+
+For customer_id 3371 (SUMINISTROS MARVAL S.L.):
+- This customer's alternative delivery address will always appear in the TOP LEFT of the PDF header section
+- Look for location names such as: Valencia, Cuenca, or other city/site names
+- Extract the complete address from that header location
+- 'TOUGH SYSTEMS, SLU Avd Comunidad Valenciana 28, 03150, Dolores, Alicante' is the supplier address, never use this as customer address
+- Apply the same formatting rules (remove accents, single commas between components)
+
+For NEWKER customers (customer_id 4891, 4892, 4893, 4894, 4895) ONLY:
+- CRITICAL: Contact name extraction is ONLY for customer IDs: 4891, 4892, 4893, 4894, 4895
+- Look for the pattern "Persona contacto Newker:" (case-insensitive) in the email
+- Extract the contact name that appears after this pattern (may be on same line or next line)
+- The name may appear in different formats:
+  * Same line: "Persona contacto Newker: SEBASTIAN" → contact_name = "SEBASTIAN"
+  * Next line with prefix: "Persona contacto Newker:\nA/Att. MONICA" → contact_name = "MONICA"
+  * In table: Campo="Persona contacto Newker", Valor="MONICA 633840788" → contact_name = "MONICA"
+- Extract ONLY the name part (ignore phone numbers, titles like "A/Att.", etc.)
+- Store the contact name EXACTLY AS IS (preserve case, do not modify)
+- If the pattern exists but no name is found after it, return null
+- CRITICAL: For NEWKER customers (4891-4895), look for the "Persona contacto Newker:" pattern. For ALL other customers, extract contact_name from the email text if present (see GENERAL CONTACT NAME EXTRACTION rules)
+
+EMAIL CONTENT:
+{email_text}
+
+Return your response as JSON with this exact structure:
+{{
+  "delivery_address": "Cno de la Torrecilla s/n, 18200, Maracena, Granada",
+  "telephone_number": null,
+  "contact_name": null
+}}
+
+For customer_id 2156 with a matching location (e.g., Lugo), return:
+{{
+  "delivery_address": "Av. Benigno Rivera 39, Lugo, Lugo",
+  "telephone_number": "982 810 425",
+  "contact_name": null
+}}
+
+For NEWKER customer (4891-4895) with contact name pattern, return:
+{{
+  "delivery_address": "PASEO DE REDING 51, 29016, MALAGA, MALAGA ESPANA",
+  "telephone_number": null,
+  "contact_name": "SEBASTIAN"
+}}
+
+For general customer with contact info in delivery section, return:
+{{
+  "delivery_address": "calle Azarbe higueras 10, 03177, Daya Vieja",
+  "telephone_number": "650 70 86 93",
+  "contact_name": "ENCARNA GESTEC"
+}}
+
+For general customer with only telephone number, return:
+{{
+  "delivery_address": "Av del Puerto 123, 46023, Valencia, Valencia",
+  "telephone_number": "961 234 567",
+  "contact_name": null
+}}
+
+If you cannot find a delivery address, return:
+{{
+  "delivery_address": null,
+  "telephone_number": null,
+  "contact_name": null
+}}
+
+IMPORTANT:
+- Remove ALL Spanish accents from the address
+- Ensure NO commas within the street address portion
+- Return exactly 3 commas separating the 4 components
+- Delivery indicator phrases are CASE-INSENSITIVE: "Dirección de entrega" = "dirección de entrega" = "DIRECCIÓN DE ENTREGA"
+- If the ONLY address you find is in the header, footer, or signature, return null
+- When in doubt, if the address is not explicitly mentioned as a delivery location in the email body, return null
+- CRITICAL: For telephone_number and contact_name:
+  * For customer_id 2156: Use pre-defined telephone numbers for matched locations
+  * For NEWKER customers (4891-4895): Extract contact name from "Persona contacto Newker:" pattern
+  * For ALL other customers: Apply general extraction rules (extract from email text if present)
+  * If no data found, return null
+- CRITICAL: Store contact name EXACTLY AS IS (preserve case)
+
+

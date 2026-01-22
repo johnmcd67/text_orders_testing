@@ -1,0 +1,43 @@
+{
+  "buttons": {
+    "backToHome": "Volver al Inicio",
+    "logout": "Cerrar Sesion",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "retry": "Reintentar",
+    "exportExcel": "Exportar a Excel",
+    "exportPdf": "Exportar como PDF",
+    "exportTxt": "Exportar como .txt",
+    "download": "Descargar",
+    "clearDates": "Limpiar Fechas",
+    "startNewJob": "Iniciar Nuevo Trabajo"
+  },
+  "status": {
+    "loading": "Cargando...",
+    "completed": "Completado",
+    "failed": "Fallido",
+    "pending": "Pendiente",
+    "running": "En Ejecucion",
+    "unknown": "Desconocido",
+    "initializing": "Inicializando...",
+    "processing": "Procesando...",
+    "awaitingReview": "Datos Extraidos - Esperando Revision",
+    "approving": "Aprobando...",
+    "downloading": "Descargando...",
+    "starting": "Iniciando...",
+    "signingIn": "Iniciando sesion..."
+  },
+  "labels": {
+    "jobId": "ID de Trabajo:",
+    "status": "Estado:",
+    "started": "Iniciado:",
+    "completed": "Completado:",
+    "step": "Paso {{step}}/{{total}}: {{label}} {{progress}}%"
+  },
+  "language": {
+    "english": "Ingles",
+    "spanish": "Espanol",
+    "en": "EN",
+    "es": "ES"
+  }
+}

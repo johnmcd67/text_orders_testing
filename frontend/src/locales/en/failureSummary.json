@@ -1,0 +1,24 @@
+{
+  "buttons": {
+    "generate": "Generate Failure Summary"
+  },
+  "status": {
+    "analyzing": "Analyzing Failures...",
+    "allSuccess": "All orders processed successfully - no failures to analyze."
+  },
+  "card": {
+    "title": "Failed Orders Analysis ({{count}} failure(s))"
+  },
+  "tooltips": {
+    "generate": "Generate summary",
+    "regenerate": "Regenerate summary",
+    "exportPdf": "Export as PDF",
+    "expand": "Expand summary",
+    "collapse": "Collapse summary",
+    "close": "Close summary"
+  },
+  "errors": {
+    "generateFailed": "Failed to generate failure summary. Please try again.",
+    "exportFailed": "Failed to export PDF. Please try again."
+  }
+}

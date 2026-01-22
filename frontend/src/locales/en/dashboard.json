@@ -1,0 +1,22 @@
+{
+  "title": "Order Processing System - Text Orders",
+  "buttons": {
+    "processOrders": "Process Orders"
+  },
+  "resultsDownload": {
+    "title": "Download Results",
+    "description": "Download the extracted order details and failed orders CSV files",
+    "claveiInput": "Clavei Input CSV",
+    "failedOrders": "Failed Orders CSV",
+    "expectedFiles": "Expected files:",
+    "claveiFileName": "job_{{jobId}}_clavei_input.csv",
+    "claveiDescription": "Clavei input data from AI_Tool_OutputTable_v2",
+    "failedFileName": "job_{{jobId}}_failed_orders.csv",
+    "failedDescription": "Emails that failed processing"
+  },
+  "errors": {
+    "fileNotFound": "{{fileType}} file not found",
+    "downloadFailed": "Failed to download {{fileType}}",
+    "startJobFailed": "Failed to start job. Please try again."
+  }
+}

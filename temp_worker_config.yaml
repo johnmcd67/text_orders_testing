@@ -1,0 +1,162 @@
+id: /subscriptions/eacd0159-1536-4327-a622-0070d5109871/resourceGroups/order-processing-text-rg/providers/Microsoft.App/containerapps/order-processing-text-worker
+identity:
+  type: None
+location: UK South
+name: order-processing-text-worker
+properties:
+  configuration:
+    activeRevisionsMode: Single
+    dapr: null
+    identitySettings: []
+    ingress:
+      additionalPortMappings: null
+      allowInsecure: false
+      clientCertificateMode: null
+      corsPolicy: null
+      customDomains: null
+      exposedPort: 0
+      external: false
+      fqdn: order-processing-text-worker.internal.greenocean-b42a12bc.uksouth.azurecontainerapps.io
+      ipSecurityRestrictions: null
+      stickySessions: null
+      targetPort: 8000
+      traffic:
+      - latestRevision: true
+        weight: 100
+      transport: Auto
+    maxInactiveRevisions: null
+    registries:
+    - identity: ''
+      passwordSecretRef: orderprocessingtextregistryazurecrio-orderprocessingtextregistry
+      server: orderprocessingtextregistry.azurecr.io
+      username: orderprocessingtextregistry
+    runtime: null
+    secrets:
+    - name: database-url
+    - name: anthropic-api-key
+    - name: microsoft-tenant-id
+    - name: microsoft-client-id
+    - name: microsoft-client-secret
+    - name: microsoft-object-id
+    - name: redis-url
+    - name: storage-connection-string
+    - name: jwt-secret
+    - name: orderprocessingtextregistryazurecrio-orderprocessingtextregistry
+    service: null
+  customDomainVerificationId: FEE04DF5BE381F06F674ECAD68DC9FE3D5670955AF5BA00F156C14B3CA69614F
+  delegatedIdentities: []
+  environmentId: /subscriptions/eacd0159-1536-4327-a622-0070d5109871/resourceGroups/order-processing-text-rg/providers/Microsoft.App/managedEnvironments/order-processing-text-env
+  eventStreamEndpoint: https://uksouth.azurecontainerapps.dev/subscriptions/eacd0159-1536-4327-a622-0070d5109871/resourceGroups/order-processing-text-rg/containerApps/order-processing-text-worker/eventstream
+  latestReadyRevisionName: order-processing-text-worker--0000002
+  latestRevisionFqdn: order-processing-text-worker--0000007.internal.greenocean-b42a12bc.uksouth.azurecontainerapps.io
+  latestRevisionName: order-processing-text-worker--0000007
+  managedEnvironmentId: /subscriptions/eacd0159-1536-4327-a622-0070d5109871/resourceGroups/order-processing-text-rg/providers/Microsoft.App/managedEnvironments/order-processing-text-env
+  outboundIpAddresses:
+  - 20.90.238.99
+  - 20.90.239.180
+  - 85.210.163.187
+  - 74.177.240.109
+  - 172.166.80.179
+  - 131.145.9.241
+  - 85.210.166.17
+  - 85.210.48.136
+  - 74.177.120.102
+  - 131.145.48.93
+  - 85.210.163.208
+  - 74.177.193.62
+  - 20.108.130.227
+  - 51.142.67.19
+  - 20.254.83.139
+  - 131.145.82.22
+  - 20.254.83.138
+  - 4.158.232.14
+  - 172.166.87.38
+  - 74.177.226.250
+  - 20.108.130.191
+  - 85.210.25.6
+  - 85.210.24.221
+  - 4.158.34.249
+  - 20.162.138.167
+  - 4.158.113.223
+  - 4.159.3.89
+  - 20.108.216.9
+  - 20.108.217.125
+  - 74.177.201.70
+  - 131.145.91.209
+  - 4.158.91.74
+  - 4.158.89.64
+  - 131.145.40.6
+  - 74.177.198.189
+  - 85.210.223.160
+  - 74.177.245.93
+  - 74.177.198.181
+  - 131.145.77.209
+  - 20.108.124.221
+  - 74.177.162.123
+  - 20.26.109.122
+  - 131.145.124.57
+  - 85.210.222.64
+  - 20.26.109.180
+  - 74.177.141.127
+  - 85.210.223.56
+  - 74.177.245.142
+  - 131.145.83.126
+  - 131.145.99.107
+  - 20.108.125.221
+  - 4.159.25.18
+  - 4.158.92.46
+  - 20.162.145.125
+  - 4.158.143.149
+  - 4.158.143.92
+  - 4.250.234.44
+  - 4.158.207.88
+  provisioningState: Succeeded
+  runningStatus: Running
+  template:
+    containers:
+    - env:
+      - name: DATABASE_URL
+        secretRef: database-url
+      - name: ANTHROPIC_API_KEY
+        secretRef: anthropic-api-key
+      - name: MICROSOFT_TENANT_ID
+        secretRef: microsoft-tenant-id
+      - name: MICROSOFT_CLIENT_ID
+        secretRef: microsoft-client-id
+      - name: MICROSOFT_CLIENT_SECRET
+        secretRef: microsoft-client-secret
+      - name: MICROSOFT_OBJECT_ID
+        secretRef: microsoft-object-id
+      - name: REDIS_URL
+        secretRef: redis-url
+      - name: AZURE_STORAGE_CONNECTION_STRING
+        secretRef: storage-connection-string
+      - name: JWT_SECRET
+        secretRef: jwt-secret
+      image: orderprocessingtextregistry.azurecr.io/worker:fd6610b4d87864941b4a37548bc5a08aff0cbfdc
+      name: order-processing-text-worker
+      resources:
+        cpu: 0.5
+        ephemeralStorage: 2Gi
+        memory: 1Gi
+    initContainers: null
+    revisionSuffix: ''
+    scale:
+      cooldownPeriod: 300
+      maxReplicas: 3
+      minReplicas: 1
+      pollingInterval: 30
+      rules: null
+    serviceBinds: null
+    terminationGracePeriodSeconds: null
+    volumes: null
+  workloadProfileName: Consumption
+resourceGroup: order-processing-text-rg
+systemData:
+  createdAt: '2025-12-08T14:56:04.0422518'
+  createdBy: f8da0754-9da4-4537-a70e-e96912105bf1
+  createdByType: Application
+  lastModifiedAt: '2025-12-09T12:52:35.3812004'
+  lastModifiedBy: f8da0754-9da4-4537-a70e-e96912105bf1
+  lastModifiedByType: Application
+type: Microsoft.App/containerApps

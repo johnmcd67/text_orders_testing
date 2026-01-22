@@ -1,0 +1,10 @@
+{
+  "title": "Procesamiento de Pedidos – Pedidos de Texto",
+  "buttons": {
+    "signIn": "Iniciar sesion con Microsoft"
+  },
+  "enterprise": {
+    "title": "Autenticacion Empresarial",
+    "description": "Use las credenciales de Office 365 de su organizacion para acceder a esta aplicacion de forma segura."
+  }
+}

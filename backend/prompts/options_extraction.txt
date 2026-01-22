@@ -1,0 +1,116 @@
+You are an expert at identifying option orders (grids/covers) in Spanish shower tray order emails.
+
+Your task is to determine if the customer has ordered ADDITIONAL OPTIONS (rejillas/grids or cubrir/covers) alongside their shower trays.
+
+OPTION TYPES TO LOOK FOR:
+- "rejillas" or "rejilla" (grids)
+- "rejilla inox" or "rejilla inoxidable" (stainless steel grids)
+- "cubrir" or "cubierta" or "tapa" (covers)
+- "grid" or "grids" (English)
+- "cover" or "covers" (English)
+
+IMPORTANT: Options are ADDITIONAL items ordered with the main shower tray. They are NOT the shower tray itself.
+
+CRITICAL - INLINE OPTION DETECTION:
+Options may be mentioned INLINE within the product description, not just on separate lines.
+When "rejilla" or similar option keywords appear IN THE SAME LINE as the product, this STILL counts as an option order.
+
+Examples of INLINE options (these ARE option orders):
+- "1 Plato Nature 150x70 blanco rejilla inox. blanca" → has_options: true (rejilla is inline)
+- "1 plato hermes 140x80 negro con rejilla" → has_options: true (rejilla is inline)
+- "Nature 120x90 blanco + rejilla blanca" → has_options: true (rejilla after +)
+
+The key is: if "rejilla", "grid", "cubrir", "cover", or "tapa" appears ANYWHERE in the email (whether on a separate line OR inline with the product), it indicates an option order.
+
+EMAIL CONTENT:
+{email_text}
+
+AVAILABLE COLORS:
+{colors_list}
+
+YOUR TASK:
+1. Determine if options are mentioned in the email (has_options: true/false)
+2. If has_options is true, extract:
+   - color: The color mentioned for the option (match against the available colors list)
+   - quantity: The NUMBER of options ordered (NOT the number of shower trays)
+   - For Premium family ONLY:
+     - size: One of these values: 70, 76, 80, 90, 100
+     - type: Either "grid" or "cover"
+
+QUANTITY EXTRACTION RULES (VERY IMPORTANT):
+1. Option Quantity is the NUMBER of options ordered, NOT the NUMBER of shower trays
+2. Common patterns:
+   - "1 rejilla" = quantity 1
+   - "2 rejillas" = quantity 2
+   - "3 x rejillas" = quantity 3
+   - "rejillas x 4" = quantity 4
+   - "5 cubrir" = quantity 5
+3. If NO quantity is explicitly mentioned, assume quantity = 1
+4. Quantity MUST be a positive integer (1, 2, 3, etc.)
+
+EXAMPLES:
+
+Example 1 - Options with quantity:
+"1 plato ducha nature 140x80 BLANCO
+2 rejillas"
+→ has_options: true, color: "blanco", quantity: 2
+
+Example 2 - Options without explicit quantity:
+"1 plato ducha hermes 160x80 BEIGE
+rejillas"
+→ has_options: true, color: "beige", quantity: 1
+
+Example 3 - No options:
+"1 plato ducha nature 140x80 BLANCO"
+→ has_options: false
+
+Example 4 - Premium with size and type:
+"1 plato ducha premium 80x80 BLANCO
+2 grids 80"
+→ has_options: true, color: "blanco", quantity: 2, size: "80", type: "grid"
+
+Example 5 - Different color for option:
+"1 plato ducha nature 140x80 BLANCO
+1 rejilla NEGRO"
+→ has_options: true, color: "negro", quantity: 1
+
+Example 6 - INLINE option (option mentioned in same line as product):
+"1 Plato de ducha resina Nature con válvula 150x70cm blanco rejilla inox. blanca"
+→ has_options: true, color: "blanco", quantity: 1
+NOTE: Even though "rejilla" is on the same line as the product, it IS an option order!
+
+Example 7 - Another INLINE option:
+"1 plato hermes 140x80 negro con rejilla negra"
+→ has_options: true, color: "negro", quantity: 1
+
+Return your response as JSON with this exact structure:
+
+For emails WITHOUT options:
+{{
+  "has_options": false
+}}
+
+For emails WITH options (non-Premium families):
+{{
+  "has_options": true,
+  "color": "blanco",
+  "quantity": 2
+}}
+
+For emails WITH options (Premium family):
+{{
+  "has_options": true,
+  "color": "blanco",
+  "quantity": 2,
+  "size": "80",
+  "type": "grid"
+}}
+
+IMPORTANT NOTES:
+- Only set has_options to true if you find clear evidence of option orders
+- Match color names against the provided colors list (fuzzy matching is okay)
+- If color is not mentioned, assume the same color as the main product
+- Quantity defaults to 1 if not specified
+- For Premium, size and type are REQUIRED if has_options is true
+- Be careful not to confuse the shower tray quantity with the option quantity
+
