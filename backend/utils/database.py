@@ -640,7 +640,7 @@ class DatabaseHelper:
             True if successful, False otherwise
         """
         query = """
-            INSERT INTO public.ai_tool_input_table_from_web_app
+            INSERT INTO testing.ai_tool_input_table_from_web_app
             (orderno, customerid, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
@@ -703,7 +703,7 @@ class DatabaseHelper:
 
                 # Build complete query
                 query = f"""
-                    INSERT INTO public.ai_tool_input_table_from_web_app
+                    INSERT INTO testing.ai_tool_input_table_from_web_app
                     (orderno, customerid, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type, job_id)
                     VALUES {values_clause}
                 """

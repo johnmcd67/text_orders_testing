@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.ai_tool_input_table_from_web_app
+CREATE TABLE IF NOT EXISTS testing.ai_tool_input_table_from_web_app
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     customerid integer,

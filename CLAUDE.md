@@ -81,7 +81,7 @@ The system uses Celery task chaining for sequential processing with a mandatory 
 - POST `/api/jobs/{id}/approve` resumes workflow to Task 4
 
 **Task 4: Tidy Emails** (`backend/tasks/task_tidy_emails.py`)
-- Inserts approved orders to PostgreSQL (`ai_tool_input_table_from_web_app`)
+- Inserts approved orders to PostgreSQL (`testing.ai_tool_input_table_from_web_app`)
 - Exports email files (.eml) to Azure File Share (instantly accessible via W: drive)
 - Updates `email_directory` field in `ai_tool_output_table` with file path
 - Categorizes processed emails as Green in Outlook
@@ -125,7 +125,7 @@ Each subagent in `backend/subagents/` is an independent module that processes em
 - id, status (pending/running/awaiting_review_data/completed/failed), progress (0-100%), progress_message
 - created_at, completed_at, number_of_orders, number_of_order_lines
 
-`public.ai_tool_input_table_from_web_app` - Input staging table for orders
+`testing.ai_tool_input_table_from_web_app` - Input staging table for orders
 - orderno, customerid, 13DigitAlias (SKU), orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type, job_id
 
 `public.ai_tool_output_table` - Final output table with all order details (40+ fields)
