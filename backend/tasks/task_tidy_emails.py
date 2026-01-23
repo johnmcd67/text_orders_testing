@@ -237,8 +237,8 @@ def process_emails_to_azure(df: pd.DataFrame, job_id: int) -> dict:
         user_id = os.getenv('MICROSOFT_OBJECT_ID')
 
         # Find folders
-        wip_folder_id = find_folder(access_token, user_id, "Inbox/FD/WIP_Text_Orders")
-        processed_folder_id = find_folder(access_token, user_id, "Inbox/FD/ProcessedOrders_Text_Orders")
+        wip_folder_id = find_folder(access_token, user_id, "Inbox/Test_Env/WIP_Text_Orders")
+        processed_folder_id = find_folder(access_token, user_id, "Inbox/Test_Env/ProcessedOrders_Text_Orders")
 
         # Get emails from WIP folder
         folder_emails = get_emails_from_folder(access_token, user_id, wip_folder_id)

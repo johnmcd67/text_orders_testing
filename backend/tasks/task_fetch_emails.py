@@ -170,9 +170,9 @@ def fetch_emails_task(self, job_id: int):
         access_token = get_access_token(tenant_id, client_id, client_secret)
 
         # Find the target folder
-        update_job_progress_with_message(job_id, 10, "Finding Outlook folder: Inbox/FD/WIP_Text_Orders...")
-        print("[Task 1] Finding Outlook folder: Inbox/FD/WIP_Text_Orders...")
-        folder_path = "Inbox/FD/WIP_Text_Orders"
+        update_job_progress_with_message(job_id, 10, "Finding Outlook folder: Inbox/Test_Env/WIP_Text_Orders...")
+        print("[Task 1] Finding Outlook folder: Inbox/Test_Env/WIP_Text_Orders...")
+        folder_path = "Inbox/Test_Env/WIP_Text_Orders"
         folder_id = find_folder_by_path(access_token, user_id, folder_path)
         print(f"[Task 1] Found folder ID: {folder_id}")
 
