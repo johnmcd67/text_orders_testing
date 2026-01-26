@@ -623,6 +623,7 @@ class DatabaseHelper:
             order_data: Dictionary with keys:
                 - orderno (int)
                 - customerid (int)
+                - customer_name (str or None) - Customer name (can be overwritten at review stage)
                 - 13DigitAlias (str) - SKU
                 - orderqty (int)
                 - reference_no (str or None)
@@ -641,13 +642,14 @@ class DatabaseHelper:
         """
         query = """
             INSERT INTO testing.ai_tool_input_table_from_web_app
-            (orderno, customerid, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            (orderno, customerid, customer_name, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         params = (
             order_data.get("orderno"),
             order_data.get("customerid"),
+            order_data.get("customer_name"),
             order_data.get("13DigitAlias"),
             order_data.get("orderqty"),
             order_data.get("reference_no"),
@@ -695,8 +697,8 @@ class DatabaseHelper:
                 # Build multi-row INSERT statement
                 # INSERT INTO table (cols) VALUES (row1), (row2), (row3)...
 
-                # Create placeholders for each row: (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                value_placeholder = "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                # Create placeholders for each row: (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                value_placeholder = "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
                 # Create comma-separated list of placeholders for all rows
                 values_clause = ", ".join([value_placeholder] * len(orders_data))
@@ -704,17 +706,18 @@ class DatabaseHelper:
                 # Build complete query
                 query = f"""
                     INSERT INTO testing.ai_tool_input_table_from_web_app
-                    (orderno, customerid, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type, job_id)
+                    (orderno, customerid, customer_name, "13DigitAlias", orderqty, reference_no, valve, delivery_address, alternative_cpsd, entry_id, option_sku, option_qty, telephone_number, contact_name, order_type, job_id)
                     VALUES {values_clause}
                 """
 
                 # Flatten all parameters into single tuple
-                # Each order contributes 15 values, so final tuple has 15 * len(orders_data) values
+                # Each order contributes 16 values, so final tuple has 16 * len(orders_data) values
                 all_params = []
                 for order in orders_data:
                     all_params.extend([
                         order.get("orderno"),
                         order.get("customerid"),
+                        order.get("customer_name"),
                         order.get("13DigitAlias"),
                         order.get("orderqty"),
                         order.get("reference_no"),

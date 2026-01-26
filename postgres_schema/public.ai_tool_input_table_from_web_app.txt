@@ -20,5 +20,6 @@ CREATE TABLE IF NOT EXISTS testing.ai_tool_input_table_from_web_app
     contact_name character varying(100) COLLATE pg_catalog."default",
     order_type character varying(50) COLLATE pg_catalog."default",
     job_id integer,
+    customer_name character varying(250) COLLATE pg_catalog."default",
     CONSTRAINT ai_tool_input_table_from_web_app_pkey PRIMARY KEY (id)
 )

@@ -57,7 +57,7 @@ def export_to_database(orders: List[Dict[str, Any]]) -> Dict[str, Any]:
         orders: List of order dictionaries with keys:
             - orderno (int)
             - customerid (int)
-            - customer_name (str) - for reference only, not inserted
+            - customer_name (str) - Customer name (can be overwritten at review stage)
             - sku (str) - 13 characters
             - quantity (int)
             - reference_no (str or None)
@@ -105,6 +105,7 @@ def export_to_database(orders: List[Dict[str, Any]]) -> Dict[str, Any]:
             order_data = {
                 "orderno": order.get("orderno"),
                 "customerid": order.get("customerid"),
+                "customer_name": order.get("customer_name"),
                 "13DigitAlias": order.get("sku"),  # Database column name
                 "orderqty": order.get("quantity"),
                 "reference_no": order.get("reference_no"),
